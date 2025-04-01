@@ -187,7 +187,8 @@ async def server_lifespan(server: FastMCP) -> AsyncIterator[Dict[str, Any]]:
 mcp = FastMCP(
     "AbletonMCP",
     description="Ableton Live integration through the Model Context Protocol",
-    lifespan=server_lifespan
+    lifespan=server_lifespan,
+    port=2801
 )
 
 # Global connection for resources
@@ -653,9 +654,13 @@ def load_drum_kit(ctx: Context, track_index: int, rack_uri: str, kit_path: str) 
         return f"Error loading drum kit: {str(e)}"
 
 # Main execution
-def main():
+def run_normal_server():
     """Run the MCP server"""
     mcp.run()
 
+def run_sse_server():
+    """Run the MCP server"""
+    mcp.run(transport="sse")
+
 if __name__ == "__main__":
-    main()
+    run_sse_server()
